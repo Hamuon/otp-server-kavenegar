@@ -2,14 +2,15 @@
   "name": "otp-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
+  "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon node main.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "auto-bind": "^5.0.1",
+    "auto-bind": "^3.0.0",
     "axios": "^1.7.2",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.4.5",
@@ -20,6 +21,7 @@
     "jalali-moment": "^3.3.11",
     "jsonwebtoken": "^9.0.2",
     "kavenegar": "^1.1.4",
+    "method-override": "^3.0.0",
     "mongoose": "^8.5.1",
     "nodemon": "^3.1.4",
     "npm": "^10.8.2",
