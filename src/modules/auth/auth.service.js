@@ -36,36 +36,36 @@ class AuthService {
     user.otp = otp;
     await user.save();
 
-    const kaveNegarApi = Kavenegar.KavenegarApi({
-      apikey: `${process.env.KAVENEGAR_API_KEY}`,
-    });
+    // const kaveNegarApi = Kavenegar.KavenegarApi({
+    //   apikey: `${process.env.KAVENEGAR_API_KEY}`,
+    // });
 
-    kaveNegarApi.VerifyLookup(
-      {
-        receptor: mobile,
-        token: otp,
-        template: "registerVerify",
-      },
-      (response, status) => {
-        console.log("kavenegar message status", status);
-        if (response && status === 200)
-          return res.status(HttpStatus.OK).send({
-            statusCode: HttpStatus.OK,
-            data: {
-              message: `کد تائید برای شماره موبایل ${toPersianDigits(
-                mobile
-              )} ارسال گردید`,
-              expiresIn: CODE_EXPIRES,
-              mobile,
-            },
-          });
+    // kaveNegarApi.VerifyLookup(
+    //   {
+    //     receptor: mobile,
+    //     token: otp,
+    //     template: "registerVerify",
+    //   },
+    //   (response, status) => {
+    //     console.log("kavenegar message status", status);
+    //     if (response && status === 200)
+    //       return res.status(HttpStatus.OK).send({
+    //         statusCode: HttpStatus.OK,
+    //         data: {
+    //           message: `کد تائید برای شماره موبایل ${toPersianDigits(
+    //             mobile
+    //           )} ارسال گردید`,
+    //           expiresIn: CODE_EXPIRES,
+    //           mobile,
+    //         },
+    //       });
 
-        return res.status(status).send({
-          statusCode: status,
-          message: "کد اعتبارسنجی ارسال نشد",
-        });
-      }
-    );
+    //     return res.status(status).send({
+    //       statusCode: status,
+    //       message: "کد اعتبارسنجی ارسال نشد",
+    //     });
+    //   }
+    // );
     return user;
   }
   async checkOTP(mobile, code) {

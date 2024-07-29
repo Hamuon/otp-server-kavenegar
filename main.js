@@ -7,11 +7,14 @@ const AllExceptionHandler = require("./src/common/exception/all-exception.handle
 const cookieParser = require("cookie-parser");
 const moment = require("jalali-moment");
 const methodOverride = require("method-override");
+const cors = require("cors");
+
 dotenv.config();
 async function main() {
   const app = express();
   const port = process.env.PORT;
   require("./src/config/mongoose.config");
+  app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser(process.env.COOKIE_SECRET_KEY));
