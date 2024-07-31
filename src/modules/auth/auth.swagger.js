@@ -30,7 +30,7 @@
 
 /**
  * @swagger
- * 
+ *
  * /auth/send-otp:
  *  post:
  *      summary: login with OTP in this end-point
@@ -50,7 +50,7 @@
  */
 /**
  * @swagger
- * 
+ *
  * /auth/check-otp:
  *  post:
  *      summary: check otp for login user
@@ -70,10 +70,10 @@
  */
 /**
  * @swagger
- * 
+ *
  * /auth/logout:
  *  get:
- *      summary: logout user 
+ *      summary: logout user
  *      tags:
  *          -   Auth
  *      responses:

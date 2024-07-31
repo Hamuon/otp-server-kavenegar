@@ -3,12 +3,13 @@ const UserModel = require("../user/user.model");
 const createHttpError = require("http-errors");
 const { AuthMessage } = require("./auth.messages");
 const { randomInt } = require("crypto");
-const HttpStatus = require("http-codes");
 const Kavenegar = require("kavenegar");
 const jwt = require("jsonwebtoken");
-
 require("dotenv").config();
-const CODE_EXPIRES = 90 * 1000;
+
+const kave = Kavenegar.KavenegarApi({
+  apikey: `${process.env.KAVENEGAR_API_KEY}`,
+});
 
 class AuthService {
   #model;
@@ -16,6 +17,7 @@ class AuthService {
     autoBind(this);
     this.#model = UserModel;
   }
+
   async sendOTP(mobile) {
     const user = await this.#model.findOne({ mobile });
     const now = new Date().getTime();
@@ -36,36 +38,18 @@ class AuthService {
     user.otp = otp;
     await user.save();
 
-    // const kaveNegarApi = Kavenegar.KavenegarApi({
-    //   apikey: `${process.env.KAVENEGAR_API_KEY}`,
-    // });
+    kave.VerifyLookup(
+      {
+        receptor: mobile,
+        token: otp.code,
+        template: "registerVerify",
+      },
+      (response, status) => {
+        console.log("kavenegar message status", status);
+        console.log("kavenegar message response", response);
+      }
+    );
 
-    // kaveNegarApi.VerifyLookup(
-    //   {
-    //     receptor: mobile,
-    //     token: otp,
-    //     template: "registerVerify",
-    //   },
-    //   (response, status) => {
-    //     console.log("kavenegar message status", status);
-    //     if (response && status === 200)
-    //       return res.status(HttpStatus.OK).send({
-    //         statusCode: HttpStatus.OK,
-    //         data: {
-    //           message: `کد تائید برای شماره موبایل ${toPersianDigits(
-    //             mobile
-    //           )} ارسال گردید`,
-    //           expiresIn: CODE_EXPIRES,
-    //           mobile,
-    //         },
-    //       });
-
-    //     return res.status(status).send({
-    //       statusCode: status,
-    //       message: "کد اعتبارسنجی ارسال نشد",
-    //     });
-    //   }
-    // );
     return user;
   }
   async checkOTP(mobile, code) {
